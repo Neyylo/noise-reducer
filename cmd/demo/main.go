@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 
+	noise "github.com/Neyylo/noise-reducer/reducer"
+	"github.com/go-audio/audio"
 	"github.com/go-audio/wav"
 )
 
@@ -22,34 +24,61 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	os.Remove("output.wav")
+
+	floatBuf := buf.AsFloatBuffer()
+	samples := floatBuf.Data
+	format := floatBuf.Format
+	filtered := noise.LowPassFilter(samples, 0.2)
+
 	f.Close()
-	fmt.Println("Old audio ->", d)
+
+	intSamples := make([]int, len(filtered))
+
+	scale := 32767.0
+
+	for i, sample := range filtered {
+		intSamples[i] = int(sample * scale)
+	}
+
+	intBuf := &audio.IntBuffer{
+		Data:           intSamples,
+		Format:         format,
+		SourceBitDepth: 16,
+	}
 
 	out, err := os.Create("./audio/test-Output/output.wav")
+
 	if err != nil {
 		panic(fmt.Sprintf("Couldn't create the OUTPUT - %v", err))
 	}
 
 	e := wav.NewEncoder(out,
-		buf.Format.SampleRate,
-		int(d.BitDepth),
-		buf.Format.NumChannels,
+		intBuf.Format.SampleRate,
+		int(intBuf.SourceBitDepth),
+		intBuf.Format.NumChannels,
 		int(d.WavAudioFormat))
-	if err = e.Write(buf); err != nil {
+
+	if err = e.Write(intBuf); err != nil {
 		panic(err)
 	}
 
 	if err = e.Close(); err != nil {
 		panic(err)
 	}
+
 	out.Close()
 
 	out, err = os.Open("./audio/test-Output/output.wav")
+
 	if err != nil {
 		panic(err)
 	}
+
 	d2 := wav.NewDecoder(out)
 	d2.ReadInfo()
 	fmt.Println("New file ->", d2)
 	out.Close()
+
 }
