@@ -10,7 +10,8 @@ import (
 )
 
 var (
-	path string = "./audio/heart.wav"
+	path  string  = "./audio/heart.wav"
+	scale float64 = 32767.0
 )
 
 func main() {
@@ -29,8 +30,15 @@ func main() {
 
 	floatBuf := buf.AsFloatBuffer()
 	samples := floatBuf.Data
+	floatSamples := make([]float64, len(samples))
+
+	for i, s := range floatBuf.Data {
+		floatSamples[i] = s / scale
+	}
+
+	//fmt.Println(floatSamples)
 	format := floatBuf.Format
-	filtered := noise.LowPassFilter(samples, 0.2)
+	filtered := noise.LowPassFilter(floatSamples, 0.1)
 
 	f.Close()
 
