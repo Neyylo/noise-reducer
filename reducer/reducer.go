@@ -1,13 +1,13 @@
-package processing
+package reducer
 
 import (
 	"fmt"
 
 	"github.com/Neyylo/noise-reducer/reducer/filters"
-	"github.com/Neyylo/noise-reducer/reducer/iohelper"
+	"github.com/Neyylo/noise-reducer/reducer/utils/iohelper"
 )
 
-func Process(inputPath, outputPath string, alpha float64) error {
+func ProcessLowPass(inputPath, outputPath string, alpha float64) error {
 
 	samples, format, err := iohelper.ReadWavFile(inputPath)
 	if err != nil {
