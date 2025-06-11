@@ -8,7 +8,7 @@ import (
 
 func main() {
 	input := "./audio/heart.wav"
-	output := "./audio/test-Output/outputtest.wav"
+	output := "./audio/test-Output/outyut.wav"
 	alpha := 0.002
 
 	err := reducer.ProcessLowPass(input, output, alpha)
