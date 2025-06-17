@@ -23,3 +23,19 @@ func ProcessLowPass(inputPath, outputPath string, alpha float64) error {
 
 	return nil
 }
+
+func ProcessFFTLowPass(inputPath, outputPath string, cutoffHz float64) error {
+	samples, format, err := iohelper.ReadWavFile(inputPath)
+	if err != nil {
+		return fmt.Errorf("échec lecture fichier : %w", err)
+	}
+
+	filtered := filters.FFTLowPass(samples, format.SampleRate, cutoffHz)
+
+	err = iohelper.WriteWavFile(outputPath, filtered, format)
+	if err != nil {
+		return fmt.Errorf("échec écriture fichier : %w", err)
+	}
+
+	return nil
+}

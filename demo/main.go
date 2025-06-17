@@ -8,12 +8,12 @@ import (
 
 func main() {
 	input := "./audio/heart.wav"
-	output := "./audio/test-Output/outyut.wav"
-	alpha := 0.002
+	output := "./audio/outputFFT.wav"
 
-	err := reducer.ProcessLowPass(input, output, alpha)
+	// OU filtre fréquentiel (FFT)
+	err := reducer.ProcessFFTLowPass(input, output, 200.0)
 	if err != nil {
-		log.Fatal("Erreur pendant le traitement :", err)
+		log.Fatal(err)
 	}
 
 	log.Println("Traitement terminé avec succès !")
