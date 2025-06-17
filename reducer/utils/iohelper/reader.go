@@ -7,7 +7,7 @@ import (
 	"github.com/go-audio/wav"
 )
 
-func ReadWavFile(path string) ([]float64, *audio.Format, error) {
+func ReadFile(path string) ([]float64, *audio.Format, error) {
 	f, err := os.Open(path)
 	if err != nil {
 		return nil, nil, err

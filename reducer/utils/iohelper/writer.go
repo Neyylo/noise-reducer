@@ -10,7 +10,7 @@ import (
 
 var scale float64 = 32767.0
 
-func WriteWavFile(path string, samples []float64, format *audio.Format) error {
+func WriteFile(path string, samples []float64, format *audio.Format) error {
 	intSamples := make([]int, len(samples))
 	for i, sample := range samples {
 		if sample > 1.0 {
