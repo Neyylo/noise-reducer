@@ -5,7 +5,6 @@ import (
 	"math/cmplx"
 )
 
-// FFT et IFFT identiques à ceux que tu avais
 func FFT(x []complex128) []complex128 {
 	N := len(x)
 	if N <= 1 {
@@ -43,7 +42,6 @@ func IFFT(X []complex128) []complex128 {
 	return out
 }
 
-// 🎯 FONCTION À COPIER : Filtre passe-bas FFT fonctionnel
 func FFTLowPass(samples []float64, sampleRate int, cutoffHz float64) []float64 {
 	N := len(samples)
 	x := make([]complex128, N)
