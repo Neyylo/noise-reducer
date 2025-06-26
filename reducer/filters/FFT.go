@@ -1,73 +1,92 @@
+// fichier : filters/fft.go
+
 package filters
 
 import (
 	"math"
-	"math/cmplx"
+
+	"gonum.org/v1/gonum/dsp/fourier"
 )
 
-func FFT(x []complex128) []complex128 {
-	N := len(x)
-	if N <= 1 {
-		return x
+// FFTLowPass applique un filtre passe-bas complet
+func FFTLowPass(samples []float64, sampleRate int, cutoffHz float64) []float64 {
+	N := len(samples)
+
+	// 1) Construire un slice complexe à partir de tes échantillons réels
+	x := make([]complex128, N)
+	for i, v := range samples {
+		x[i] = complex(v, 0)
 	}
 
-	even := make([]complex128, N/2)
-	odd := make([]complex128, N/2)
-	for i := 0; i < N/2; i++ {
-		even[i] = x[2*i]
-		odd[i] = x[2*i+1]
+	//FFT complexe (taille N → spectre taille N)
+	fft := fourier.NewCmplxFFT(N)
+	S := fft.Coefficients(nil, x) // []complex128 de longueur N
+
+	//Coupe les fréquences > cutoffHz
+	for k := range S {
+		freq := float64(k) * float64(sampleRate) / float64(N)
+		if freq > cutoffHz {
+			S[k] = 0
+		}
 	}
 
-	Feven := FFT(even)
-	Fodd := FFT(odd)
+	//iFFT complète vers domaine temporel
+	Y := fft.Sequence(nil, S) //[]complex128 de longueur N
 
-	X := make([]complex128, N)
-	for k := 0; k < N/2; k++ {
-		t := cmplx.Exp(complex(0, -2*math.Pi*float64(k)/float64(N))) * Fodd[k]
-		X[k] = Feven[k] + t
-		X[k+N/2] = Feven[k] - t
+	//Récupère la partie réelle + normalisation
+	out := make([]float64, N)
+	var maxAmp float64
+	for i, c := range Y {
+		r := real(c)
+		out[i] = r
+		if a := math.Abs(r); a > maxAmp {
+			maxAmp = a
+		}
 	}
-	return X
-}
-
-func IFFT(X []complex128) []complex128 {
-	N := len(X)
-
-	conj := make([]complex128, N)
-	for i := 0; i < N; i++ {
-		conj[i] = cmplx.Conj(X[i])
-	}
-
-	fft := FFT(conj)
-
-	out := make([]complex128, N)
-	for i := 0; i < N; i++ {
-		out[i] = cmplx.Conj(fft[i]) / complex(float64(N), 0)
+	if maxAmp > 0 {
+		scale := 1.0 / maxAmp
+		for i := range out {
+			out[i] *= scale
+		}
 	}
 	return out
 }
 
-func FFTLowPass(samples []float64, sampleRate int, cutoffHz float64) []float64 {
+// FFTBandPass applique un filtre passe-bande complet (spectre complexe).
+func FFTBandPass(samples []float64, sampleRate int, lowHz, highHz float64) []float64 {
 	N := len(samples)
+
 	x := make([]complex128, N)
-	for i := 0; i < N; i++ {
-		x[i] = complex(samples[i], 0)
+	for i, v := range samples {
+		x[i] = complex(v, 0)
 	}
 
-	X := FFT(x)
+	fft := fourier.NewCmplxFFT(N)
+	S := fft.Coefficients(nil, x)
 
-	for i := 0; i < N; i++ {
-		freq := float64(i) * float64(sampleRate) / float64(N)
-		if freq > cutoffHz {
-			X[i] = 0
+	for k := range S {
+		freq := float64(k) * float64(sampleRate) / float64(N)
+		if freq < lowHz || freq > highHz {
+			S[k] = 0
 		}
 	}
 
-	xFiltered := IFFT(X)
+	Y := fft.Sequence(nil, S)
 
-	output := make([]float64, N)
-	for i := range xFiltered {
-		output[i] = real(xFiltered[i])
+	out := make([]float64, N)
+	var maxAmp float64
+	for i, c := range Y {
+		r := real(c)
+		out[i] = r
+		if a := math.Abs(r); a > maxAmp {
+			maxAmp = a
+		}
 	}
-	return output
+	if maxAmp > 0 {
+		scale := 1.0 / maxAmp
+		for i := range out {
+			out[i] *= scale
+		}
+	}
+	return out
 }

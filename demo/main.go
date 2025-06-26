@@ -7,14 +7,13 @@ import (
 )
 
 func main() {
-	input := "./audio/heart.wav"
-	output := "./audio/outputFFT.wav"
+	in := "./audio/heart.wav"
+	out := "./audio/outputBand800Hz.wav"
 
-	// OU filtre fréquentiel (FFT)
-	err := reducer.ProcessFFTLowPass(input, output, 200.0)
-	if err != nil {
+	// Passe-bande 20–150 Hz
+	if err := reducer.ProcessFFTBandPass(in, out, 20.0, 200.0); err != nil {
 		log.Fatal(err)
 	}
 
-	log.Println("Traitement terminé avec succès !")
+	log.Println("Traitement band-pass terminé !")
 }
