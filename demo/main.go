@@ -7,8 +7,8 @@ import (
 )
 
 func main() {
-	in := "./audio/heart.wav"
-	out := "./audio/outputBand800Hz.wav"
+	in := "./audio/original_heart.wav"
+	out := "./audio/test_output/outputBand200Hz.wav"
 
 	if err := reducer.ProcessFFTBandPass(in, out, 20.0, 200.0); err != nil {
 		log.Fatal(err)

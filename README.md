@@ -115,4 +115,4 @@ go test ./...
 
 ## 📄 License
 
-MIT License © Nolan Neyy
+Nolan Dugué | Neyylo
