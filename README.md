@@ -54,8 +54,8 @@ func main() {
   input := "./audio/heart.wav"
   output := "./audio/output_bandpass.wav"
 
-  // Apply a 20–150 Hz band-pass filter
-  err := reducer.ProcessFFTBandPass(input, output, 20.0, 150.0)
+  // Apply a 20–200 Hz band-pass filter
+  err := reducer.ProcessFFTBandPass(input, output, 20.0, 200.0)
   if err != nil {
     log.Fatal(err)
   }
