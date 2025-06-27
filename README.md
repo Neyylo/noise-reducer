@@ -72,29 +72,11 @@ go run main.go
 
 ## 🔍 API Overview
 
-### filters.FFTLowPass
-```go
-func FFTLowPass(samples []float64, sampleRate int, cutoffHz float64) []float64
-```
-Applies a low-pass FFT filter and returns normalized signal.
-
-### filters.FFTBandPass
-```go
-func FFTBandPass(samples []float64, sampleRate int, lowHz, highHz float64) []float64
-```
-Applies a band-pass FFT filter between `lowHz` and `highHz`.
-
 ### reducer.ProcessLowPass
 ```go
 func ProcessLowPass(inputPath, outputPath string, alpha float64) error
 ```
 Applies an exponential IIR low-pass filter to a WAV file.
-
-### reducer.ProcessFFTLowPass
-```go
-func ProcessFFTLowPass(inputPath, outputPath string, cutoffHz float64) error
-```
-Applies an FFT-based low-pass filter to a WAV file.
 
 ### reducer.ProcessFFTBandPass
 ```go
