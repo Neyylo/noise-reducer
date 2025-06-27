@@ -37,7 +37,7 @@ noise-reducer/
 ├── go.mod
 ├── go.sum
 └── README.md
-
+```
 ## 📖 Example Usage
 
 ### Go Application
