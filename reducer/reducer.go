@@ -24,23 +24,6 @@ func ProcessLowPass(inputPath, outputPath string, alpha float64) error {
 	return nil
 }
 
-/*
-	func ProcessFFTLowPass(inputPath, outputPath string, cutoffHz float64) error {
-		samples, format, err := iohelper.ReadFile(inputPath)
-		if err != nil {
-			return fmt.Errorf("échec lecture fichier : %w", err)
-		}
-
-		filtered := filters.FFTLowPass(samples, format.SampleRate, cutoffHz)
-
-		err = iohelper.WriteFile(outputPath, filtered, format)
-		if err != nil {
-			return fmt.Errorf("échec écriture fichier : %w", err)
-		}
-
-		return nil
-	}
-*/
 func ProcessFFTBandPass(inputPath, outputPath string, lowHz, highHz float64) error {
 	samples, format, err := iohelper.ReadFile(inputPath)
 	if err != nil {
