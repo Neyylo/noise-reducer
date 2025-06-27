@@ -13,7 +13,7 @@ go get gonum.org/v1/gonum/dsp/fourier
 
 - Low-pass filtering via `filters.FFTLowPass`
 - Band-pass filtering via `filters.FFTBandPass`
-- WAV file read/write support (mono & stereo) with `iohelper`
+- WAV file read/write support with `iohelper`
 - CLI demo and Go import usage
 - Automatic signal normalization
 
@@ -101,17 +101,6 @@ Applies an FFT-based low-pass filter to a WAV file.
 func ProcessFFTBandPass(inputPath, outputPath string, lowHz, highHz float64) error
 ```
 Applies an FFT-based band-pass filter to a WAV file.
-
-## ⚙️ Configuration Notes
-
-- Works with mono or stereo WAV files.
-- Stereo files are processed per channel.
-
-## 🛠️ Testing
-
-```bash
-go test ./...
-```
 
 ## 📄 License
 
