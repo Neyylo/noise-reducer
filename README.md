@@ -2,14 +2,14 @@
 
 > Go library for noise reduction and audio component extraction using FFT-based filters (low-pass, band-pass).
 
-## 📦 Installation
+## Installation
 
 ```bash
 go get github.com/Neyylo/noise-reducer
 go get gonum.org/v1/gonum/dsp/fourier
 ```
 
-## 🚀 Features
+## Features
 
 - Low-pass filtering via `filters.FFTLowPass`
 - Band-pass filtering via `filters.FFTBandPass`
