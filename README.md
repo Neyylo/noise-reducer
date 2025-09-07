@@ -86,4 +86,4 @@ Applies an FFT-based band-pass filter to a WAV file.
 
 ## 📄 License
 
-This project is licensed under the [MIT License](./LICENSE) © 2025 Nolan Dugué (Neyylo).
+This project is licensed under the [MIT License](./LICENSE.MD) © 2025 Nolan Dugué (Neyylo).
