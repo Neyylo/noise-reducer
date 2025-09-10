@@ -38,7 +38,7 @@ noise-reducer/
 ├── go.sum
 └── README.md
 ```
-## 📖 Example Usage
+##  Example Usage
 
 ### Go Application
 
@@ -70,7 +70,7 @@ cd demo
 go run main.go
 ```
 
-## 🔍 API Overview
+## API Overview
 
 ### reducer.ProcessLowPass
 ```go
